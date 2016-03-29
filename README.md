@@ -86,18 +86,18 @@ Configurations files provided by OWS in yml format **doesn't work**! Mainly for 
 1 They are empty and pratically every param inside them is mandatory
 2 (heavier) Some fields are mispelled.
 
-Here a working TextSecure server file filled with **fake** values you have to provide your own values:
+Here a working TextSecure server file filled with **fake** values. You have to provide your own values:
 
 
-    \# This is the sample config/production.yml file for the TextSecure Server
-    \# Pay attention! To start TextSecur server you will need to install and start PushServer
+    # This is the sample config/textsecure.yml file for the TextSecure Server
+    # Pay attention! To start TextSecur server you will need to install and start PushServer
     
     twilio: 
-      accountId: AZ8acwec7fc5eaf209a69f05e50a8b2675 \#fake
-      accountToken: 556658d1458f8852ed183a64c40ec5d1 \#fake
+      accountId: AZ8acwec7fc5eaf209a69f05e50a8b2675 #fake
+      accountToken: 556658d1458f8852ed183a64c40ec5d1 #fake
       numbers:
         -
-          +33756796138 \#fake
+          +33756796138 #fake
       localDomain: foo.org
     
     push:
@@ -107,9 +107,9 @@ Here a working TextSecure server file filled with **fake** values you have to pr
       password: 123
     
     s3:
-       accessKey: ABCDEFGCUFYDHVM2LXXX \#fake
-       accessSecret: W0UfGDddfAbqYyCTIIbSQlDtreTGokOs0OTpL0SE \#fake
-       attachmentsBucket: thenameofyouts3buket \#fake
+       accessKey: ABCDEFGCUFYDHVM2LXXX #fake
+       accessSecret: W0UfGDddfAbqYyCTIIbSQlDtreTGokOs0OTpL0SE #fake
+       attachmentsBucket: thenameofyouts3buket #fake
     
     directory:
       url: "redis://localhost:6379/0"
@@ -121,21 +121,21 @@ Here a working TextSecure server file filled with **fake** values you have to pr
       applicationConnectors:
         - type: http
           port: 8080
-          \#keyStorePath: config/example.keystore
-          \#keyStorePassword: whisper
-          \#validateCerts: true
+          #keyStorePath: config/example.keystore
+          #keyStorePassword: whisper
+          #validateCerts: true
       adminConnectors:
         - type: http
           port: 8081
-          \#keyStorePath: config/example.keystore
-          \#keyStorePassword: whisper
-          \#validateCerts: true
+          #keyStorePath: config/example.keystore
+          #keyStorePassword: whisper
+          #validateCerts: true
     
     
     websocket:
       enabled: true
     
-    messageStore: \# Postgres database configuration for message store
+    messageStore: # Postgres database configuration for message store
       driverClass: org.postgresql.Driver
       user: "signal"
       password: "thepassword"
@@ -149,7 +149,7 @@ Here a working TextSecure server file filled with **fake** values you have to pr
       properties:
         charSet: UTF-8
     
-    \#federation: \# is disabled
+    #federation: # is disabled
     
     logging:
       level: INFO
@@ -162,10 +162,55 @@ Here a working TextSecure server file filled with **fake** values you have to pr
     
     
     redphone:
-        authKey: 1234567890 \#fake
+      authKey: 1234567890 #fake
+
+Here a working PushServer server file filled with **fake** values. You have to provide your own values:
+
+    redis:
+      url: redis://localhost:6379/2
+    
+    authentication:
+      servers:
+        -
+          name: 123
+          password: 123
+    gcm:
+      xmpp: false
+      apiKey: AIzaSyAsviyMy0kIe8uhCEfo8NbeqGoku7oOCi4 #fake
+      senderId: 888789650296 #fake
+      redphoneApiKey: AIddSyAsviyMy8jKe8chCEfr8NbeqGghy7oOCi4 #fake
+    
+    
+    apn:
+      feedback: false
+      pushKey: /path/to/your/apnpushcertificates/apns-dev-key-noenc.pem #fake
+      voipKey: /path/to/your/apnpushcertificates/apns-dev-key-noenc.pem #fake
+      voipCertificate: /path/to/your/apnpushcertificates/apns-dev-cert.pem #fake
+      pushCertificate: /path/to/your/apnpushcertificates/apns-dev-cert.pem #fake
+    
+    server:
+        applicationConnectors:
+        - type: http
+          port: 9090
+        adminConnectors:
+        - type: http
+          port: 9091
+        gzip:
+            enabled: true
+    
+    logging:
+      level: INFO
+      appenders:
+        - type: file
+          currentLogFilename: /tmp/pushserver.log
+          archivedLogFilenamePattern: /tmp/pushserver-%d.log.gz
+          archivedFileCount: 5
+        - type: console
+
 
 
 ---
 [1] http://support.whispersystems.org/hc/en-us/articles/212477768
+
 [2] Originally https://github.com/WhisperSystems/TextSecure-Server/issues/44 but it has been removed 
 
