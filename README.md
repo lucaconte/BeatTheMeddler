@@ -39,19 +39,22 @@ and here:
 https://github.com/lucaconte/PushServer
 
 Than
+
     git clone --depth 1 https://github.com/lucaconte/TextSecure-Server.git
 and 
+
     git clone --depth 1 https://github.com/lucaconte/PushServer.git
 
 
 Now start with compiling PushServer:
-   cd PushServer
-   mvn clean install
+
+    cd PushServer
+    mvn clean install
 
 
 If you try now  to perform a build of TSS You obtain a broken dependency error related to WebSocked-Resources project (also forked by me):
 
-   [ERROR] Failed to execute goal on project TextSecureServer: Could not resolve dependencies for project org.whispersystems.textsecure:TextSecureServer:jar:0.92: Failed to collect dependencies at org.whispersystems:websocket-resources:jar:0.3.2: Failed to read artifact descriptor for org.whispersystems:websocket-resources:jar:0.3.2: Could not find artifact org.whispersystems:parent:pom:0.3.2 in gcm-server-repository (https://raw.github.com/whispersystems/maven/master/gcm-server/releases/) -> [Help 1]
+    [ERROR] Failed to execute goal on project TextSecureServer: Could not resolve dependencies for project org.whispersystems.textsecure:TextSecureServer:jar:0.92: Failed to collect dependencies at org.whispersystems:websocket-resources:jar:0.3.2: Failed to read artifact descriptor for org.whispersystems:websocket-resources:jar:0.3.2: Could not find artifact org.whispersystems:parent:pom:0.3.2 in gcm-server-repository (https://raw.github.com/whispersystems/maven/master/gcm-server/releases/) -> [Help 1]
 
 To bypass this error clnoe WebSocket-Resource separately:
 
