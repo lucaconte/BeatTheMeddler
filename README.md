@@ -1,7 +1,7 @@
 #Signal Community Edition Installation Steps
 Author: Luca Conte luca@riseup.net
 
-last edit: 2016.03.27 ("now" in the following text)
+first release: 2016.03.27 ("now" in the following text)
 
 ##Abstract
 This paper woluld be a quickstart for anyone aims to setup a working installation of OpenWhisperSystems (OWS) Signal software either the backend part (Server) and the frontend one (Android, iOS and Chrome/Chromium extention).
