@@ -1,19 +1,23 @@
 #Signal Community Edition Installation Steps
 Author: Luca Conte luca@riseup.net
+
 last edit: 2016.03.27 ("now" in the following text)
 
 ##Abstract
 This paper woluld be a quickstart for anyone aims to setup a working installation of OpenWhisperSystems (OWS) Signal software either the backend part (Server) and the frontend one (Android, iOS and Chrome/Chromium extention).
 
 ##What Is Signal
-Signal is a messaging software (aka App) like, for example, the well known WhatsApp (or Telegram) built with security and privacy in mind. It implements an Ent-To-End encryption (Curve25519, AES-256 and HMAC-SHA256)[1] and it woluld represent (and probably *do*)  *[...]the current state of the art in private messaging* (as OWS says[1]).
+Signal is a messaging software (aka App) like, for example, the well known WhatsApp (or Telegram) built with security and privacy in mind. It implements an Ent-To-End encryption [1] (Curve25519, AES-256 and HMAC-SHA256) and it woluld represent (and probably *do*)  *[...]the current state of the art in private messaging* (as OWS says).
 
 
 ##The server part
 The original server components could be found here:
-https://github.com/WhisperSystems/TextSecure-Server
+
+    https://github.com/WhisperSystems/TextSecure-Server
+
 and here:
-https://github.com/WhisperSystems/PushServer
+
+    https://github.com/WhisperSystems/PushServer
 
 "component*s*" and not "component" because actually the OWS Signal backend is an ecosystem builded over two (technically) decoupeld "players": TextSecure-Server (TSS) which expose the API used by clients and a PushServer (PS) which perform APN and GCM notifications. In reality there is/was a third player, the RedPhoneServer, responsible for VOIP Crypted communications, but its sources are nota avaiable so every functionality relate to it at the moment **must** be disabled (see later).
 
@@ -34,9 +38,12 @@ https://github.com/lucaconte/PushServer
 
 ###Let's start with the code
 Due to some trick that anyone need to perform in order to have a working server I've forked some OWS repositories and pushed my local modifications into them. So If you are impatient it's better for you perform clone (or fork) operations from my forks:
-https://github.com/lucaconte/TextSecure-Server
+
+    https://github.com/lucaconte/TextSecure-Server
+
 and here:
-https://github.com/lucaconte/PushServer
+
+    https://github.com/lucaconte/PushServer
 
 Than
 
@@ -62,8 +69,8 @@ To bypass this error clnoe WebSocket-Resource separately:
 
 build it:
 
-   cd ../WebSocker-Resource
-   mvn clean install
+    cd ../WebSocker-Resource
+    mvn clean install
 
 It will fail with an error relate to JavaDoc:
    [ERROR] Failed to execute goal org.apache.maven.plugins:maven-javadoc-plugin:2.8.1:jar (attach-javadocs) on project websocket-resources: MavenReportException: Error while creating archive:
@@ -74,6 +81,7 @@ Now it's necessary to install it into our local Maven repository with correct "n
     mvn install:install-file -Dfile=./library/target/websocket-resources-0.3.2.jar -DgroupId=org.whispersystems -DartifactId=websocket-resources -Dversion=0.3.2 -Dpackaging=jar
 
 After this finally we are able to compile TSS
+
     cd ..
     cd TextSecure-Server
     mvn install
@@ -83,8 +91,9 @@ Troubleshootinh: if you have some problem in building related to "tests" add
 
 ###The configuration files
 Configurations files provided by OWS in yml format **doesn't work**! Mainly for two reasons:
-1 They are empty and pratically every param inside them is mandatory
-2 (heavier) Some fields are mispelled.
+
+1. They are empty and pratically every param inside them is mandatory
+2. (heavier) Some fields are mispelled.
 
 Here a working TextSecure server file filled with **fake** values. You have to provide your own values:
 
@@ -122,13 +131,13 @@ Here a working TextSecure server file filled with **fake** values. You have to p
         - type: http
           port: 8080
           #keyStorePath: config/example.keystore
-          #keyStorePassword: whisper
+          #keyStorePassword: example
           #validateCerts: true
       adminConnectors:
         - type: http
           port: 8081
           #keyStorePath: config/example.keystore
-          #keyStorePassword: whisper
+          #keyStorePassword: example
           #validateCerts: true
     
     
@@ -312,6 +321,8 @@ Again, reading the comments, shold be clear that:
 - "whisper.store" must be installed into Signal-Android into "res/row"
 - "whisper.cer" must be installed into Signal-iOS
 
+If you change the password ("whisper") in whisper.store generation command  you have to use the same used into the org.thoughtcrime.securesms.push.TextSecurePushTrustStore.java
+If you change the password ("example") in example.keystore generation command  you have to use the same used into the TSS yml config file
 
 ##The iOS part
 
@@ -320,18 +331,17 @@ Signal iOS doesn't work in HTTP, HTTS is mandatory.
     https://github.com/lucaconte/Signal-iOS.git
 
 ###APN activation
-Obtain
+Obtain ... to be continued, stay tuned!
 
 
 
 ---
-[1] http://support.whispersystems.org/hc/en-us/articles/212477768
+[1]: http://support.whispersystems.org/hc/en-us/articles/212477768 "OWS security"
 
-[2] Originally https://github.com/WhisperSystems/TextSecure-Server/issues/44 but it has been removed 
+[2]: Originally https://github.com/WhisperSystems/TextSecure-Server/issues/44 but it has been removed 
 
-[3] http://gropwizard.io
+[3]: http://gropwizard.io
 
-[4] http://www.liquibase.org/
+[4]: http://www.liquibase.org/
 
-[5] https://github.com/lucaconte/TextSecure-Server/tree/master/src/main/resources
-
+[5]: https://github.com/lucaconte/TextSecure-Server/tree/master/src/main/resources
