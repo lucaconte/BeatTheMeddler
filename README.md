@@ -1,6 +1,8 @@
 #Signal Community Edition Installation Steps
 Author: Luca Conte luca@riseup.net
+
 first release: 2016.03.27 ("now" in the following text)
+
 status: DRAFT
 
 ##Abstract
