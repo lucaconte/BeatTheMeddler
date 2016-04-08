@@ -385,7 +385,7 @@ If you change the password ("whisper") in whisper.store generation command  you 
 If you change the password ("example") in example.keystore generation command  you have to use the same used into the TSS yml config file
 
 ##The iOS part
-*Remember if didn't done before to perform APN activation (see "APN activation") and related following step*
+*Remember if didn't done before to perform APN activation (see [APN activation](#apn-activation)) and related following step*
 
     git clone --depth 1 https://github.com/lucaconte/Signal-iOS.git
 
