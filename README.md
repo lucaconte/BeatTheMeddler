@@ -242,7 +242,7 @@ Here a working PushServer server file filled with **fake** values. You have to p
 
 ###The Database
 Once you have PostresSQL Up&Running with username, password, messagesdb and accountsdb (two db can be the same one) **and** these parameters are well coded inside TSS' yml  file as seen above as jdbc string , you can now create data structures needed by the application.
-Note that you'll not fine any sql script into the projects' sources because TSS is based on Dropwizard[^3] and Dropwizard[^3] uses Liquibase[^4] as «*open source database-independent library for tracking, managing and applying database schema changes*» so DB infos are into xml files under "src/main/resources" folder.
+Note that you'll not fine any sql script into the projects' sources because TSS is based on Dropwizard\[[3](#three)\] and Dropwizard\[[3](#three)\] uses Liquibase\[[4](#four)\] as «*open source database-independent library for tracking, managing and applying database schema changes*» so DB infos are into xml files under "src/main/resources" folder.
 For executing those scripts use:
 
     java -jar jar/TextSecureServer-*.jar accountdb migrate config/textsecure.yml
@@ -251,7 +251,7 @@ and
 
     java -jar jar/TextSecureServer-*.jar messagedb migrate config/textsecure.yml
 
-**ATTENTION** use  my[^5] repository scripts because those hosted into OWS  *now* doesn't  work because of a duplicate table definition.
+**ATTENTION** use  my\[[5](#five)\] repository scripts because those hosted into OWS  *now* doesn't  work because of a duplicate table definition.
 
 ###APN activation
 *Do this step if you plan to use iOS clients*
