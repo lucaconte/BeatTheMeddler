@@ -8,10 +8,10 @@ released: 20160408
 status: DRAFT
 
 ##Abstract
-This paper woluld be a quickstart for anyone aims to setup a working installation of OpenWhisperSystems (OWS) Signal software either the backend part (Server) and the frontend one (Android, iOS and Chrome/Chromium extention).
+This paper would be a quickstart for anyone aims to setup a working installation of OpenWhisperSystems (OWS) Signal software either the backend part (Server) and the frontend one (Android, iOS and Chrome/Chromium extension).
 
 ##What Is Signal
-Signal is a messaging software (aka App) like, for example, the well known WhatsApp (or Telegram) built with security and privacy in mind. It implements an Ent-To-End encryption [1] (Curve25519, AES-256 and HMAC-SHA256) and it woluld represent (and probably *do*)  *[...]the current state of the art in private messaging* (as OWS says).
+Signal is a messaging software (aka App) like, for example, the well known WhatsApp (or Telegram) built with security and privacy in mind. It implements an Ent-To-End encryption [1] (Curve25519, AES-256 and HMAC-SHA256) and it would represent (and probably *do*)  *[...]the current state of the art in private messaging* (as OWS says).
 
 
 ##The server part
@@ -23,9 +23,9 @@ and here:
 
     https://github.com/WhisperSystems/PushServer
 
-"component*s*" and not "component" because actually the OWS Signal backend is an ecosystem builded over two (technically) decoupeld "players": TextSecure-Server (TSS) which expose the API used by clients and a PushServer (PS) which perform APN and GCM notifications. In reality there is/was a third player, the RedPhoneServer, responsible for VOIP Crypted communications, but its sources are nota avaiable so every functionality relate to it at the moment **must** be disabled (see later).
+"component*s*" and not "component" because actually the OWS Signal backend is an ecosystem built over two (technically) decoupled "players": TextSecure-Server (TSS) which expose the API used by clients and a PushServer (PS) which perform APN and GCM notifications. In reality there is/was a third player, the RedPhoneServer, responsible for VOIP Encrypted communications, but its sources are not available so every functionality relate to it at the moment **must** be disabled (see later).
 
-Due to some trick that anyone need to perform in order to han a working server I've forked some OWS repositories and pushed my local modifications into them. So If you are impatient it's better for you perform clone (or fork) operations from my forks:
+Due to some trick that anyone need to perform in order to have a working server I've forked some OWS repositories and pushed my local modifications into them. So If you are impatient it's better for you perform clone (or fork) operations from my forks:
 
     https://github.com/lucaconte/TextSecure-Server
 
@@ -35,7 +35,7 @@ and here:
 
 ###Prerequisites
 - Java  1.7. This tutorial is based on the Oracle version, may be interesting perform these steps using an OpenJdk.
-- A linux box. I've used a Debian testing environment for bulding and debug purposes and a Debian Jessie as production environment.
+- A linux box. I've used a Debian testing environment for building and debug purposes and a Debian Jessie as production environment.
 - A working [Redis](http://redis.io "Redis") (for caching purposes)
 - A [PostgreSQL](http://www.postgresql.org/) instance
 - A Twillio account for SMS registration process confirmation
@@ -59,7 +59,7 @@ and
 
     git clone --depth 1 https://github.com/lucaconte/PushServer.git
 
-Probably here you're interested in changing the APN invocation from production environment to sandbox one or viceversa. In this case go to "org.whispersystems.pushserver.senders.APNSender" class, method "public void start()" and edit this part uncommenting the right service's instantiation:
+Probably here you're interested in changing the APN invocation from production environment to sandbox one or vice versa. In this case go to "org.whispersystems.pushserver.senders.APNSender" class, method "public void start()" and edit this part uncommenting the right service's instantiation:
 
     //[LC] uncomment for production releases (with the right certificate)
     // this.pushApnService = APNS.newService()
@@ -98,7 +98,7 @@ It will fail with an error relate to JavaDoc:
     [ERROR] Failed to execute goal org.apache.maven.plugins:maven-javadoc-plugin:2.8.1:jar (attach-javadocs) on project websocket-resources: MavenReportException: Error while creating archive:
     [ERROR] Exit code: 1 - javadoc: error - invalid flag: -Xdoclint:none
 
-**but** anyway the artifact we need has been builded: ./library/targer/websocket-resources-0.3.2.jar
+**but** anyway the artifact we need has been built: ./library/targer/websocket-resources-0.3.2.jar
 Now it's necessary to install it into our local Maven repository with correct "names":
 
     mvn install:install-file -Dfile=./library/target/websocket-resources-0.3.2.jar -DgroupId=org.whispersystems -DartifactId=websocket-resources -Dversion=0.3.2 -Dpackaging=jar
@@ -115,8 +115,8 @@ Troubleshooting: if you have some problem in building related to "tests" add
 ###The configuration files
 Configurations files provided by OWS in yml format **doesn't work**! Mainly for two reasons:
 
-1. They are empty and pratically every param inside them is mandatory
-2. (heavier) Some fields are mispelled.
+1. They are empty and practically every param inside them is mandatory
+2. (heavier) Some fields are misspelled.
 
 Here a working TextSecure server file filled with **fake** values. You have to provide your own values:
 
@@ -251,12 +251,12 @@ and
 
     java -jar jar/TextSecureServer-*.jar messagedb migrate config/textsecure.yml
 
-**ATTENTION** use  my[^5] repository scripts because those hosted into OWS  *now* doesn't  work beacuse of a duplicate table definition.
+**ATTENTION** use  my[^5] repository scripts because those hosted into OWS  *now* doesn't  work because of a duplicate table definition.
 
 ###APN activation
 *Do this step if you plan to use iOS clients*
 
-Obtain  a certificate from Apple for APN service (propably a \*.cer), import in a Key Tool and export it splitted into two p12 file (apns-dev-cert.p12 and apns-dev-key.p12 for example); one for the certificate and the other for the related key. Now go to terminal and execute:
+Obtain  a certificate from Apple for APN service (probably a \*.cer), import in a Key Tool and export it splitted into two p12 file (apns-dev-cert.p12 and apns-dev-key.p12 for example); one for the certificate and the other for the related key. Now go to terminal and execute:
 
     openssl pkcs12 -clcerts -nokeys -out apns-dev-cert.pem -in apns-dev-cert.p12
 
@@ -265,7 +265,7 @@ and:
 
     openssl pkcs12 -nocerts -out apns-dev-key.pem -in apns-dev-key.p12
 
-At the *first* time **Do NOT digit a password!** at the *second* one **type a password** should doesen't matter which.
+At the *first* time **Do NOT digit a password!** at the *second* one **type a password** should doesn't matter which.
 Now:
 
     openssl rsa -in apns-dev-key.pem -out apns-dev-key-noenc.pem
@@ -292,7 +292,7 @@ Use:
 
     java -jar jar/TextSecureServer-\*.jar server migrate config/textsecure.yml
 
-and, in a separated console (servers **are not** demonized so you have to open another console or send them in background using (in \*nix systems) "\&"):
+and, in a separated console (servers **are not** daemonized so you have to open another console or send them in background using (in \*nix systems) "\&"):
 
     java -jar jar/TextSecureServer-\*.jar server config/textsecure.yml
 
@@ -300,7 +300,7 @@ It doesn't matter the order. Take note about server's IP
 
 
 ##The Android part
-This paper starts with Android because it's simpler than iOS and it is simpler because Android doesn't require SSL (HTTPS) for work. **Only** for debug purposes, as you can see in TSS configuration file snippet, the SSL related parameters are commented. Additional informations will be avaiable later in this paper because in a production environment SSL matter!!!
+This paper starts with Android because it's simpler than iOS and it is simpler because Android doesn't require SSL (HTTPS) for work. **Only** for debug purposes, as you can see in TSS configuration file snippet, the SSL related parameters are commented. Additional informations will be available later in this paper because in a production environment SSL matter!!!
 
 Start with cloning my Signal-Android repo:
 
@@ -413,6 +413,22 @@ With:
 
 Remember to substitute "whisper.cer" (see SSL part in previous steps) with your own.
 
+Into VertionMigrations.m change this:
+
+    // VOIP Push might need to be enabled because 1) user ran old version 2) Update to compatible iOS version
+    if (VOIPRegistration && [TSAccountManager isRegistered]) {
+        [self nonBlockingPushRegistration];
+    }
+    
+in this (added a PushRegistration call):
+
+    // VOIP Push might need to be enabled because 1) user ran old version 2) Update to compatible iOS version
+    if (VOIPRegistration && [TSAccountManager isRegistered]) {
+        [self nonBlockingPushRegistration];
+    }
+    
+    [self nonBlockingPushRegistration];
+
 If you plan to perform a pods update go into SDatabaseSecondaryIndexes.m and change:
 
     //[AC 21/03/2016] Modificato perché le librerie sono state aggiornate e il metodo era deprecated
@@ -437,7 +453,7 @@ If you plan to perform a pods update go into SDatabaseSecondaryIndexes.m and cha
         };
     YapDatabaseSecondaryIndexHandler *handler = [YapDatabaseSecondaryIndexHandler withObjectBlock:block];
 
-Now you can update te pods
+Now you can update the pods
 
 **That's All!!**
 
