@@ -1,7 +1,9 @@
 #Signal Installation Steps
 Author: Luca Conte luca@riseup.net
 
-first release: 2016.03.27 ("now" in the following text)
+first draft: 20160827 ("now" in the following text)
+
+released: 20160408
 
 status: DRAFT
 
@@ -42,7 +44,7 @@ and here:
 - An APN account for Apple Push Notifications (two pem certificates) [ask]
 
 ###Let's start with the code
-Due to some trick that anyone need to perform in order to have a working server I've forked some OWS repositories and pushed my local modifications into them. So If you are impatient it's better for you perform clone (or fork) operations from my forks:
+Due to some tricks that anyone need to perform in order to have a working server I've forked some OWS repositories and pushed my local modifications into them. So If you are impatient it's better for you perform clone (or fork) operations from my forks:
 
     https://github.com/lucaconte/TextSecure-Server
 
@@ -57,6 +59,20 @@ and
 
     git clone --depth 1 https://github.com/lucaconte/PushServer.git
 
+Probably here you're interested in changing the APN invocation from production environment to sandbox one or viceversa. In this case go to "org.whispersystems.pushserver.senders.APNSender" class, method "public void start()" and edit this part uncommenting the right service's instantiation:
+
+    //[LC] uncomment for production releases (with the right certificate)
+    // this.pushApnService = APNS.newService()
+    //                          .withCert(new ByteArrayInputStream(pushKeyStore), "insecure")
+    //                         .asQueued()
+    //                        .withProductionDestination().build();
+
+    this.pushApnService = APNS.newService()
+            .withCert(new ByteArrayInputStream(pushKeyStore), "insecure")
+            .asQueued()
+            .withSandboxDestination().build();
+
+
 
 Now start with compiling PushServer:
 
@@ -68,9 +84,9 @@ If you try now  to perform a build of TSS You obtain a broken dependency error r
 
     [ERROR] Failed to execute goal on project TextSecureServer: Could not resolve dependencies for project org.whispersystems.textsecure:TextSecureServer:jar:0.92: Failed to collect dependencies at org.whispersystems:websocket-resources:jar:0.3.2: Failed to read artifact descriptor for org.whispersystems:websocket-resources:jar:0.3.2: Could not find artifact org.whispersystems:parent:pom:0.3.2 in gcm-server-repository (https://raw.github.com/whispersystems/maven/master/gcm-server/releases/) -> [Help 1]
 
-To bypass this error clnoe WebSocket-Resource separately:
+To bypass this error clone WebSocket-Resource separately:
 
-   git clone --depth 1 https://github.com/lucaconte/WebSocked-Resources.git
+    git clone --depth 1 https://github.com/lucaconte/WebSocked-Resources.git
 
 build it:
 
@@ -78,11 +94,13 @@ build it:
     mvn clean install
 
 It will fail with an error relate to JavaDoc:
-   [ERROR] Failed to execute goal org.apache.maven.plugins:maven-javadoc-plugin:2.8.1:jar (attach-javadocs) on project websocket-resources: MavenReportException: Error while creating archive:
-   [ERROR] Exit code: 1 - javadoc: error - invalid flag: -Xdoclint:none
+
+    [ERROR] Failed to execute goal org.apache.maven.plugins:maven-javadoc-plugin:2.8.1:jar (attach-javadocs) on project websocket-resources: MavenReportException: Error while creating archive:
+    [ERROR] Exit code: 1 - javadoc: error - invalid flag: -Xdoclint:none
 
 **but** anyway the artifact we need has been builded: ./library/targer/websocket-resources-0.3.2.jar
 Now it's necessary to install it into our local Maven repository with correct "names":
+
     mvn install:install-file -Dfile=./library/target/websocket-resources-0.3.2.jar -DgroupId=org.whispersystems -DartifactId=websocket-resources -Dversion=0.3.2 -Dpackaging=jar
 
 After this finally we are able to compile TSS
@@ -91,7 +109,7 @@ After this finally we are able to compile TSS
     cd TextSecure-Server
     mvn install
 
-Troubleshootinh: if you have some problem in building related to "tests" add
+Troubleshooting: if you have some problem in building related to "tests" add
     -DskipTests
 
 ###The configuration files
@@ -235,6 +253,39 @@ and
 
 **ATTENTION** use  my[^5] repository scripts because those hosted into OWS  *now* doesn't  work beacuse of a duplicate table definition.
 
+###APN activation
+*Do this step if you plan to use iOS clients*
+
+Obtain  a certificate from Apple for APN service (propably a \*.cer), import in a Key Tool and export it splitted into two p12 file (apns-dev-cert.p12 and apns-dev-key.p12 for example); one for the certificate and the other for the related key. Now go to terminal and execute:
+
+    openssl pkcs12 -clcerts -nokeys -out apns-dev-cert.pem -in apns-dev-cert.p12
+
+**Do NOT digit a password!**
+and:
+
+    openssl pkcs12 -nocerts -out apns-dev-key.pem -in apns-dev-key.p12
+
+At the *first* time **Do NOT digit a password!** at the *second* one **type a password** should doesen't matter which.
+Now:
+
+    openssl rsa -in apns-dev-key.pem -out apns-dev-key-noenc.pem
+
+copy  apns-dev-cert.pem and apns-dev-key-noenc.pem somewhere into the File System reachable from PushServer and use them into PushServer's yml files
+
+##(Temporary) APN deactivation
+*useful part if you plan to test Android only as first*
+
+Remove @NotEmpty annotation above "private ApnConfiguration apn;" field definition   into org.whispersystems.pushserver.PushServerConfiguration class, so into yml PushServers's file the APN related params become optional.
+
+Into org.whispersystems.pushserver.PusServer's "run" method comment every row with apnSender var and pass null in the jersey Controller registration of the  PushController:
+
+    environment.jersey().register(new PushController(null, gcmSender));
+
+intead of
+
+    environment.jersey().register(new PushController(apnSender, gcmSender));
+
+
 ###Let's start the servers
 
 Use:
@@ -256,6 +307,7 @@ Start with cloning my Signal-Android repo:
     git clone --depth 1 https://github.com/lucaconte/Signal-Android.git
 
 Now into build.gradle find "TEXTSECURE_URL" and change it with your server's IP. Mind the protocol!!!
+
 Locate org.thoughtcrime.securesms.jobs.GcmRefreshJob and change REGISTRATION_ID static field value with senderId specified into TSS confi file. In our case: "888789650296"
 
 It's not mandatory but if you wish to use Geo Localization probably you need to change AndroidManifest.xml setting these lines:
@@ -264,7 +316,7 @@ It's not mandatory but if you wish to use Geo Localization probably you need to 
             android:name="com.google.android.geo.API_KEY"
             android:value="AIudSyGzY1S2RcjRQh6IrUhiW5FWZEj36uRMnQs"/>
 
-with a value KEY obtained int he Google Cloud Console. If requested, in API activation, you have to specify the package indicated at the beginning of AndroidManifest.xml, in our case: "org.thoughtcrime.securesms" 
+with a KEY value obtained int he Google Cloud Console. If requested, in API activation, you have to specify the package indicated at the beginning of AndroidManifest.xml, in our case: "org.thoughtcrime.securesms" 
 
 That's all! 
 Now you shold be able to play with your own Signal installation.
@@ -319,8 +371,11 @@ Now you shold be able to play with your own Signal installation.
     #for iOS client you have to convert  whisper.crt in  DER format and install whisper.cer in Signal-iOS
     openssl x509 -in whisper.crt -out whisper.cer -outform DER
 
-Execute this script as explained in the first lines of it. You can find the original version of this script here (Thanks to tha author for sharing it).
-Again, reading the comments, shold be clear that:
+Execute this script as explained in the first lines of it. You can find the original version of this script here (Thanks to the author for sharing it):
+
+   https://github.com/janimo/textsecure-docker
+   
+Again, reading the comments, should be clear that:
 
 - "example.keystore" is the same you have specified  into TSS ycm file (uncomment the commented rows and chance protocol fotm http to https)
 - "whisper.store" must be installed into Signal-Android into "res/row"
@@ -330,14 +385,65 @@ If you change the password ("whisper") in whisper.store generation command  you 
 If you change the password ("example") in example.keystore generation command  you have to use the same used into the TSS yml config file
 
 ##The iOS part
+*Remember if didn't done before to perform APN activation (see "APN activation") and related following step*
 
-Signal iOS doesn't work in HTTP, HTTS is mandatory.
+    git clone --depth 1 https://github.com/lucaconte/Signal-iOS.git
 
-    https://github.com/lucaconte/Signal-iOS.git
+Go to TSConstants.h and change server's urls with your own:
 
-###APN activation
-Obtain ... to be continued, stay tuned!
+    #define textSecureWebSocketAPI @"wss://your_server:8080/v1/websocket/"
+    #define textSecureServerURL @"https://your_server:8080/"
 
+Edit Release.m by changing this:
+
+    andServerPort:31337
+    andMasterServerHostName:@"master.whispersystems.org"
+    andDefaultRelayName:@"relay"
+    andRelayServerHostNameSuffix:@"whispersystems.org"
+
+With:
+
+    andServerPort:8080
+    //andServerPort:31337
+    andMasterServerHostName:@"yourserver.foo"
+    //andMasterServerHostName:@"master.whispersystems.org"
+    andDefaultRelayName:@"relay"
+    andRelayServerHostNameSuffix:@"yourserver.foo"
+    //andRelayServerHostNameSuffix:@"whispersystems.org"
+
+Remember to substitute "whisper.cer" (see SSL part in previous steps) with your own.
+
+If you plan to perform a pods update go into SDatabaseSecondaryIndexes.m and change:
+
+    //[AC 21/03/2016] Modificato perché le librerie sono state aggiornate e il metodo era deprecated
+    //    YapDatabaseSecondaryIndexWithObjectBlock block =
+    //    ^(NSMutableDictionary *dict, NSString *collection, NSString *key, id object) {
+    //        
+    //        if ([object isKindOfClass:[TSInteraction class]]) {
+    //            TSInteraction *interaction = (TSInteraction *)object;
+    //            
+    //            [dict setObject:@(interaction.timestamp) forKey:TSTimeStampSQLiteIndex];
+    //        }
+    //    };
+
+    YapDatabaseSecondaryIndexWithObjectBlock block =
+        ^(YapDatabaseReadTransaction *transaction, NSMutableDictionary *dict, NSString *collection, NSString *key, id object) {
+
+          if ([object isKindOfClass:[TSInteraction class]]) {
+              TSInteraction *interaction = (TSInteraction *)object;
+
+              [dict setObject:@(interaction.timestamp) forKey:TSTimeStampSQLiteIndex];
+          }
+        };
+    YapDatabaseSecondaryIndexHandler *handler = [YapDatabaseSecondaryIndexHandler withObjectBlock:block];
+
+Now you can update te pods
+
+**That's All!!**
+
+Many thanks to anyone that helped me in reaching the end
+
+All feedbacks are welcome
 
 
 ---
