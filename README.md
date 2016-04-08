@@ -463,7 +463,7 @@ All feedbacks are welcome
 
 
 ---
-[<a name="one"></a>1]: http://support.whispersystems.org/hc/en-us/articles/212477768 "OWS security"
+<a name="one"></a>1: http://support.whispersystems.org/hc/en-us/articles/212477768 "OWS security"
 
 [2]: Originally https://github.com/WhisperSystems/TextSecure-Server/issues/44 but it has been removed 
 
