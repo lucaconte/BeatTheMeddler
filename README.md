@@ -11,7 +11,7 @@ status: DRAFT
 This paper would be a quickstart for anyone aims to setup a working installation of OpenWhisperSystems (OWS) Signal software either the backend part (Server) and the frontend one (Android, iOS and Chrome/Chromium extension).
 
 ##What Is Signal
-Signal is a messaging software (aka App) like, for example, the well known WhatsApp (or Telegram) built with security and privacy in mind. It implements an Ent-To-End encryption [1](#one) (Curve25519, AES-256 and HMAC-SHA256) and it would represent (and probably *do*)  *[...]the current state of the art in private messaging* (as OWS says)[1](#one).
+Signal is a messaging software (aka App) like, for example, the well known WhatsApp (or Telegram) built with security and privacy in mind. It implements an Ent-To-End encryption \[[1](#one)\] (Curve25519, AES-256 and HMAC-SHA256) and it would represent (and probably *do*)  *[...]the current state of the art in private messaging* (as OWS says)\[[1](#one)\].
 
 
 ##The server part
@@ -465,10 +465,10 @@ All feedbacks are welcome
 ---
 <a name="one"></a>1: http://support.whispersystems.org/hc/en-us/articles/212477768 "OWS security"
 
-[2]: Originally https://github.com/WhisperSystems/TextSecure-Server/issues/44 but it has been removed 
+<a name="two"></a>2: Originally https://github.com/WhisperSystems/TextSecure-Server/issues/44 but it has been removed 
 
-[3]: http://gropwizard.io
+<a name="three"></a>3: http://dropwizard.io
 
-[4]: http://www.liquibase.org/
+<a name="four"></a>4: http://www.liquibase.org/
 
-[5]: https://github.com/lucaconte/TextSecure-Server/tree/master/src/main/resources
+<a name="five"></a>5: https://github.com/lucaconte/TextSecure-Server/tree/master/src/main/resources
