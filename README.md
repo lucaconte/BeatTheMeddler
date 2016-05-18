@@ -1,7 +1,7 @@
 #Signal Installation Steps
 Author: Luca Conte luca@riseup.net
 
-first draft: 20160827 ("now" in the following text)
+first draft: 20160327 ("now" in the following text)
 
 released: 20160408
 
