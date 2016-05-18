@@ -245,11 +245,11 @@ Once you have PostresSQL Up&Running with username, password, messagesdb and acco
 Note that you'll not fine any sql script into the projects' sources because TSS is based on Dropwizard\[[3](#three)\] and Dropwizard\[[3](#three)\] uses Liquibase\[[4](#four)\] as «*open source database-independent library for tracking, managing and applying database schema changes*» so DB infos are into xml files under "src/main/resources" folder.
 For executing those scripts use:
 
-    java -jar jar/TextSecureServer-*.jar accountdb migrate config/textsecure.yml
+    java -jar Push-Server-<VERSION>-capsule-fat.jar server YourPushServerConfigFile.yml
 
 and
 
-    java -jar jar/TextSecureServer-*.jar messagedb migrate config/textsecure.yml
+    java -jar TextSecureServer-<VERSION>.jar messagedb migrate config/textsecure.yml
 
 **ATTENTION** use  my\[[5](#five)\] repository scripts because those hosted into OWS  *now* doesn't  work because of a duplicate table definition.
 
