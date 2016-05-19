@@ -245,7 +245,7 @@ Once you have PostresSQL Up&Running with username, password, messagesdb and acco
 Note that you'll not fine any sql script into the projects' sources because TSS is based on Dropwizard\[[3](#three)\] and Dropwizard\[[3](#three)\] uses Liquibase\[[4](#four)\] as «*open source database-independent library for tracking, managing and applying database schema changes*» so DB infos are into xml files under "src/main/resources" folder.
 For executing those scripts use:
 
-    java -jar Push-Server-<VERSION>-capsule-fat.jar server YourPushServerConfigFile.yml
+    java -jar TextSecureServer-<VERSION>.jar accountdb migrate config/textsecure.yml
 
 and
 
@@ -290,11 +290,11 @@ intead of
 
 Use:
 
-    java -jar jar/TextSecureServer-\*.jar server migrate config/textsecure.yml
+    java -jar Push-Server-<VERSION>-capsule-fat.jar server YourPushServerConfigFile.yml
 
 and, in a separated console (servers **are not** daemonized so you have to open another console or send them in background using (in \*nix systems) "\&"):
 
-    java -jar jar/TextSecureServer-\*.jar server config/textsecure.yml
+    java -jar TextSecureServer-<VERSION>.jar server config/textsecure.yml
 
 It doesn't matter the order. Take note about server's IP
 
