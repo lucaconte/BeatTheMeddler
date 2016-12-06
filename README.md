@@ -25,14 +25,6 @@ and here:
 
 "component*s*" and not "component" because actually the OWS Signal backend is an ecosystem built over two (technically) decoupled "players": TextSecure-Server (TSS) which expose the API used by clients and a PushServer (PS) which perform APN and GCM notifications. In reality there is/was a third player, the RedPhoneServer, responsible for VOIP Encrypted communications, but its sources are not available so every functionality relate to it at the moment **must** be disabled (see later).
 
-Due to some trick that anyone need to perform in order to have a working server I've forked some OWS repositories and pushed my local modifications into them. So If you are impatient it's better for you perform clone (or fork) operations from my forks:
-
-    https://github.com/lucaconte/TextSecure-Server
-
-and here:
-
-    https://github.com/lucaconte/PushServer
-
 ###Prerequisites
 - Java  1.7. This tutorial is based on the Oracle version, may be interesting perform these steps using an OpenJdk.
 - A linux box. I've used a Debian testing environment for building and debug purposes and a Debian Jessie as production environment.
